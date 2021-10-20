@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+# The `qoolworths` application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the repo for a TDD / React / Clean code workshop. It's a simple project that simulates an online grocery shopping application, and there is no
+clear plan for release it to public yet. 
 
-## Available Scripts
+However, there are some functionalities that can be useful in cases, what have included (or at least planed) for the app are:
 
-In the project directory, you can run:
+- there are a list of groceries that a customer can browser and add to their cart
+- a cart that has total price and items in it
+- customer can pay by cash only at the store
 
-### `yarn start`
+Some other enhancement could be 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- search by category / name
+- voucher or some kind of redemption
+- user register / login / profile
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+But let's see how it goes
 
-### `yarn test`
+## Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+There are a bunch of prerequisites:
 
-### `yarn build`
+- nvm `brew install nvm`
+- node version `nvm use 14.15.5`
+- yarn `npm install -g yarn`  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Launch the application
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clone this repo and go to the folder
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+git clone git@github.com:abruzzi/qoolworths.git qoolworths
+cd qoolworths
+```
+ 
+then run
+  
+```
+yarn start
+```
+ 
+to start the app. If everything goes well you should be able to see a browser window pointing to `http://localhost:3000`
 
-### `yarn eject`
+## Test
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Execute the following to run unit tests
+```
+yarn test
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+A test should be pass
