@@ -38,4 +38,31 @@ describe('DirectToBoot', () => {
       timeout: 5000,
     });
   })
+
+  it('enable the button when an order is ready - polling', async () => {
+    let count = 0;
+    server.use(
+      rest.get('https://qoolworths.com.au/orders/:orderId', (req, res, ctx) => {
+        const orderId = req.params['orderId']
+
+        if(count < 3) {
+          count = count + 1
+          return res(ctx.json({
+            order: orderId,
+            status: 'pending'
+          }))
+        }
+
+        return res(ctx.json({
+          order: orderId,
+          status: 'ready'
+        }))
+      })
+    )
+
+    render(<DirectToBoot orderId="0444526344" />)
+    await waitFor(() => expect(screen.getByTestId('iamhere')).toBeEnabled(), {
+      timeout: 5000,
+    });
+  })
 })

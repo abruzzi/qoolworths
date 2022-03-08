@@ -1,21 +1,7 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
+import useOrder from "./use-order";
 
 const DirectToBoot = ({orderId}: {orderId: string}) => {
-  const [isReady, setReady] = useState<boolean>(false)
-
-  useEffect(() => {
-    const fetchOrderStatus = async () => {
-      try {
-        const response = await axios.get(`https://qoolworths.com.au/orders/${orderId}`)
-        setReady(response.data.status === 'ready')
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    fetchOrderStatus()
-  }, [orderId])
+  const {isReady} = useOrder(orderId)
 
   return <div>
     <h3 data-testid="heading">Direct To Boot</h3>
