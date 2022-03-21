@@ -1,4 +1,4 @@
-import {render, screen, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import DirectToBoot from '../DirectToBoot'
 
 import {rest} from "msw";
@@ -63,6 +63,90 @@ describe('DirectToBoot', () => {
     render(<DirectToBoot orderId="0444526344" />)
     await waitFor(() => expect(screen.getByTestId('iamhere')).toBeEnabled(), {
       timeout: 5000,
-    });
+    })
+  })
+
+  const mockNotifyStore = () => {
+    server.use(
+      rest.get('https://qoolworths.com.au/orders/:orderId', (req, res, ctx) => {
+        const orderId = req.params['orderId']
+
+        return res(ctx.json({
+          order: orderId,
+          status: 'ready'
+        }))
+      }),
+
+      rest.post('https://qoolworths.com.au/orders/:orderId', (req, res, ctx) => {
+        const orderId = req.params['orderId']
+
+        return res(ctx.json({
+          order: orderId,
+          notified: true
+        }))
+      })
+    )
+  }
+
+  const mockNetworkFailure = () => {
+    server.use(
+      rest.get('https://qoolworths.com.au/orders/:orderId', (req, res, ctx) => {
+        const orderId = req.params['orderId']
+
+        return res(ctx.json({
+          order: orderId,
+          status: 'ready'
+        }))
+      }),
+
+      rest.post('https://qoolworths.com.au/orders/:orderId', (req, res, ctx) => {
+        const orderId = req.params['orderId']
+
+        return res(
+          ctx.status(404),
+          ctx.json({
+            errorMessage: `Order ${orderId} not found`,
+          }))
+      })
+    )
+  }
+
+  it('notify the store that the customer is arrived', async () => {
+    mockNotifyStore()
+
+    render(<DirectToBoot orderId="0444526344" />)
+
+    const button = screen.getByTestId('iamhere');
+
+    await waitFor(() => expect(button).toBeEnabled(), {
+      timeout: 5000,
+    })
+
+    act(() => {
+      fireEvent.click(button)
+    })
+
+    await waitFor(() => expect(screen.queryByTestId('iamhere')).not.toBeInTheDocument())
+    await waitFor(() => expect(screen.queryByTestId('store-is-notified')).toBeInTheDocument())
+  })
+
+  it('shows the phone number when something went wrong', async () => {
+    mockNetworkFailure()
+
+    render(<DirectToBoot orderId="0444526344" />)
+
+    const button = screen.getByTestId('iamhere');
+
+    await waitFor(() => expect(button).toBeEnabled(), {
+      timeout: 5000,
+    })
+
+    act(() => {
+      fireEvent.click(button)
+    })
+
+    await waitFor(() => expect(screen.queryByTestId('iamhere')).not.toBeInTheDocument())
+    await waitFor(() => expect(screen.queryByTestId('store-is-notified')).not.toBeInTheDocument())
+    await waitFor(() => expect(screen.queryByTestId('store-phone-number')).toBeInTheDocument())
   })
 })

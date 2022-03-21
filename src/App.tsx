@@ -1,11 +1,12 @@
 import DirectToBoot from "./DirectToBoot";
-import StackView from "./StackView";
 
 const App = () => {
-  return <>
-    <StackView>main content</StackView>
-    <DirectToBoot orderId="0444526344" />
-  </>;
+  return <DirectToBoot orderId="0444526344" />;
 };
+
+if (process.env.NODE_ENV === 'development') {
+  const { worker } = require('./mocks/browser')
+  worker.start()
+}
 
 export default App;
