@@ -7,8 +7,11 @@ const DirectToBoot = ({orderId}: { orderId: string }) => {
 
   return <div>
     <h3 data-testid="heading">Direct To Boot</h3>
-    <p data-testid="description">Please click the button when you have arrived, one of our friendly staff will bring
-      your order to you.</p>
+    {
+      notified ? <p data-testid="description">Thanks for letting us know, your order will come to you in a minute</p> :
+        <p data-testid="description">Please click the button when you have arrived, one of our friendly staff will bring
+          your order to you.</p>
+    }
     {
       notifiable ? (notified ? <p data-testid="store-is-notified">Notified</p> :
         <button data-testid="iamhere" disabled={!isReady} onClick={notify}>I'm Here</button>) : (

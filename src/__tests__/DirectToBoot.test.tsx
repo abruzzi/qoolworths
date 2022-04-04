@@ -128,6 +128,8 @@ describe('DirectToBoot', () => {
 
     await waitFor(() => expect(screen.queryByTestId('iamhere')).not.toBeInTheDocument())
     await waitFor(() => expect(screen.queryByTestId('store-is-notified')).toBeInTheDocument())
+
+    expect(screen.getByTestId('description')).toHaveTextContent('Thanks for letting us know, your order will come to you in a minute')
   })
 
   it('shows the phone number when something went wrong', async () => {
